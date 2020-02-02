@@ -1,9 +1,4 @@
----
-path: "/post/EHK9Vmr9RHmyKPSfaPTIUQ"
-date: "2020-01-15"
-title: "Taro与React的差异"
----
-
+# Taro与React的差异
 Taro默认为最新版本。
 
 ## 不支持在render()之外的方法里定义JSX
