@@ -1,6 +1,7 @@
 # 个人博客
 
 ## 最新发布
+- [202006](https://github.com/aiyayao/blog/blob/master/src/date/202006.md)
 - [202004](https://github.com/aiyayao/blog/blob/master/src/date/202004.md)
 - [202003](https://github.com/aiyayao/blog/blob/master/src/date/202003.md)
 
