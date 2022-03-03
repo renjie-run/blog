@@ -26,3 +26,15 @@
 - 阶段二：简单构建优化——grunt、gulp
 - 阶段三：JS/CSS模块化开发——AMD/CommonJS/UMD/ES6 Module Less/Sass/Stylus
 - 阶段四：组件化开发与资源管理（分治思想）——微信小程序工程化
+
+## 具体内容
+
+### 前端模块化
+
+详情见具体章节：[前端模块化](https://github.com/renjie-run/blog/blob/master/src/font-end-engineering/前端模块化.md)
+
+### 前端组件化（趋势）
+
+### 前端规范化
+
+### 前端自动化
