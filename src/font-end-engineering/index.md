@@ -30,11 +30,37 @@
 ## 具体内容
 
 ### 前端模块化
+- 职责
+  - 模块管理
+  - 资源加载
+- 工具
+  - NodeJS
+  - npm
+  - webpack
+  - parcel
+  - rollup
+
 
 详情见具体章节：[前端模块化](https://github.com/renjie-run/blog/blob/master/src/font-end-engineering/前端模块化.md)
 
 ### 前端组件化（趋势）
+- 优势：自由、灵活、可复用
+- 相关实践：微信小程序（目录结构）
 
 ### 前端规范化
+- 工具
+  - eslint
+  - stylelint
 
 ### 前端自动化
+- 自动构建
+  - grunt
+  - gulp：压缩、校验、资源合并
+- 自动化测试
+  - 单元测试：Chai、Karma、Mocha
+  - UI 测试： Jest、Enzyme、Selenium Webdriver
+  - 覆盖率测试：istanbul
+  - 性能测试：benchmark（基准测试）
+  - 持续测试：codecov、Travis CI
+- 自动部署
+  - pm2
