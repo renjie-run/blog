@@ -52,6 +52,8 @@
   - eslint
   - stylelint
 
+详情见具体章节：[代码规范](https://github.com/renjie-run/blog/blob/master/src/font-end-engineering/代码规范.md)
+
 ### 前端自动化
 - 自动构建
   - grunt
