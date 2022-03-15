@@ -8,14 +8,14 @@ npm i webpack webpack-cli -D // 当前所使用的版本为 5.x
 
 ### webpack 的使用
 
-#### 2.1 webpack-cli 的使用
+#### 1 webpack-cli 的使用
 npm 5.2.x 之后提供了 `npx`，帮助执行项目中提供的指令包。
 
 webpack4.0 之后可实现 0 配置打包，即默认打包 `src` 目录下的 `index` 文件.
 但是 0 配置一般限制比较多，无法自定义很多配置。
 常用的还是使用 webpack 配置文件进行打包构建。
 
-#### 2.2 webpack 配置
+#### 2 webpack 配置
 **核心概念**
 1. 入口（entry）：程序的入口 js
 2. 输出（output）：打包后存放的位置
@@ -53,17 +53,17 @@ module.exports = {
 
 这里使用了一个 webpack 的 flag：`--config`，用于提供 webpack 配置文件的路径。
 
-#### 2.3 开发时自动编译工具
+#### 3 开发时自动编译工具
 1. watch 模式
 2. webpack-dev-server （多数场景下都使用该方式）
 3. webpack-dev-middleware
 
-**2.3.1 watch**
+**3.1 watch**
 作用是监视本地项目文件的变化，发现有修改的代码会自动编译打包生成输出文件。使用方式有以下两种：
 - 配置在 package.json 文件中的 `scripts` 字段中：`webpack --watch`
 - 配置在 webpack 配置文件中：`watch: true`
 
-**2.3.2 webpack-dev-server（推荐）**
+**3.2 webpack-dev-server（推荐）**
 devServer 会在内存中生成一个打包好的 `bundle.js`，专供开发时使用，打包效率高，修改代码后会自动重新打包以及刷新浏览器，用户体验较好。
 注意：devServer 服务运行在项目的 `public` 目录。webpack4.x 默认运行在项目根目录。
 
@@ -97,7 +97,7 @@ devServer: {
 ....
 ```
 
-**2.3.3 插件：html-webpack-plugin**
+**3.3 插件：html-webpack-plugin**
 用途
 1. 根据模板生成指定名称的 html 文件（类似于 devServer 生成在内存中的 `bundle.js`）
 2. 会自动引入 `bundle.js`
@@ -123,7 +123,7 @@ plugins: [
 ....
 ```
 
-**2.3.4 webpack-dev-middleware**
+**3.4 webpack-dev-middleware**
 `webpack-dev-middleware` 是一个容器（wrapper），他可以把 webpack 处理后的文件传递给一个服务器（server），`webpack-dev-server` 在内部使用了它，同时它也可以作为一个单独的包来使用，以进行更多自定义设置来实现更多的需求。
 
 1. 安装 `express` 和 `webpack-dev-middleware`
@@ -154,3 +154,63 @@ app.listen(3000, function() {
 4. 运行：`npm run serve`
 
 注意：`webpack-dev-middleware` 必须使用 `html-webpack-plugin` 插件，否则 html 文件无法正确输出到 express 服务的根目录。
+
+3.5 小结
+自动编译工具主要都是为了提高开发体验。
+
+#### 4 处理 CSS
+处理 CSS 需要 `css-loader` 和 `style-loader` 两个 loader 来完成。
+
+**作用**
+- css-loader：解析 CSS 文件
+- style-loader：将解析出来的结果加入到 HTML 中，使其生效
+
+**安装**
+```bash
+npm install css-loader style-loader -D
+```
+
+**配置**
+`loader` 需要配置在 `module.rules` 中。
+
+```JavaScript
+....
+module: {
+  rules: [
+    {
+      test: /\.css$/ // 表示用于解析后缀为 .css 的文件
+      // webpack 读取 loader 是从右往左读取，会讲 CSS 文件先交给最右侧的 loader 来处理
+      // loader 的执行顺序是从右到左以管道的方式链式调用
+      use: ['style-loader', 'css-loader']
+    }
+  ]
+}
+....
+```
+
+#### 5 处理 less 和 sass
+**安装**
+```bash
+npm i less less-loader -D // 处理 less
+npm i sass-loader node-sass -D // 处理 sass
+```
+
+**配置**
+```JavaScript
+....
+module: {
+  rules: [
+    ....
+    {
+      test: /\.less$/,
+      use: ['style-loader', 'css-loader', 'less-loader']
+    },
+    {
+      test: /\.s(a|c)ss$/,
+      use: ['style-loader', 'css-loader', 'sass-loader']
+    }
+    ....
+  ]
+}
+....
+```
