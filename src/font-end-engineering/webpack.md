@@ -262,7 +262,7 @@ module: {
 
 #### webpack5 中的解析方式
 
-webpack5 通过资源模块来实现。资源模块(asset module)是一种模块类型，它允许使用资源文件（字体，图标等）而无需配置额外 loader。
+> webpack5 通过资源模块来实现。资源模块(asset module)是一种模块类型，它允许使用资源文件（字体，图标等）而无需配置额外 loader。
 
 资源模块类型(asset module type) 通过添加 4 种新的模块类型，来替换所有这些 loader：
 - `asset/resource` 发送一个单独的文件并导出 URL。之前通过使用 file-loader 实现。
@@ -306,5 +306,44 @@ webpack5 通过资源模块来实现。资源模块(asset module)是一种模块
   }
 ....
 ```
+
+### 7 Babel
+> Babel 是一个工具链，主要用于将采用 ECMAScript 2015+ 语法编写的代码转换为向后兼容的 JavaScript 语法，以便能够运行在当前和旧版本的浏览器或其他环境中。
+
+安装
+```bash
+npm i babel-loader @babel/core @babel/preset-env -D
+```
+
+配置
+```JavaScript
+....
+module: {
+  rules: [
+    ....
+    {
+      test: /\.js$/,
+      use: 'babel-loader',
+      exclude: /node_module/, // 排除不需要编译的目录
+    }
+    ....
+  ]
+}
+....
+```
+
+除此之外，还需要在项目根目录下创建 `.babelrc` 文件（也可以创建其他形式的 babel 配置未见，具体可参考官网），配置文件一般用来配置预设以及插件等。
+```bash
+{
+  "presets": ["@babel/env"], // 配置预设，这样就可以使用一些比较新的 ES 语法
+  "plugins": [...] // 配置插件，一般用于支持一些更高级的语法
+  ""
+}
+```
+
+注意：插件的排列顺序很重要。如果两个插件都要处理某个片段的代码，则会根据 plugin 或 preset 的排列顺序依次执行。
+- plugins 在 presets 前运行。
+- plugin 顺序从前往后依次执行。
+- preset 顺序是颠倒的（从后往前）依次执行。
 
 
