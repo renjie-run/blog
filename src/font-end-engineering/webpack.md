@@ -1,21 +1,21 @@
-## Webpack 基础
+# Webpack 基础
 
-### 安装
+## 安装
 在所在项目中安装
 ```bash
 npm i webpack webpack-cli -D // 当前所使用的版本为 5.x
 ```
 
-### webpack 的使用
+## webpack 的使用
 
-#### 1 webpack-cli 的使用
+### 1 webpack-cli 的使用
 npm 5.2.x 之后提供了 `npx`，帮助执行项目中提供的指令包。
 
 webpack4.0 之后可实现 0 配置打包，即默认打包 `src` 目录下的 `index` 文件.
 但是 0 配置一般限制比较多，无法自定义很多配置。
 常用的还是使用 webpack 配置文件进行打包构建。
 
-#### 2 webpack 配置
+### 2 webpack 配置
 **核心概念**
 1. 入口（entry）：程序的入口 js
 2. 输出（output）：打包后存放的位置
@@ -41,6 +41,7 @@ module.exports = {
 ```
 
 **将 `npx webpack` 命令配置到 package.json 文件的脚本中**
+
 具体是将命令配置到 `scripts` 字段中，具体使用情况如下：
 ```JavaScript
 ....
@@ -53,18 +54,21 @@ module.exports = {
 
 这里使用了一个 webpack 的 flag：`--config`，用于提供 webpack 配置文件的路径。
 
-#### 3 开发时自动编译工具
+### 3 开发时自动编译工具
 1. watch 模式
 2. webpack-dev-server （多数场景下都使用该方式）
 3. webpack-dev-middleware
 
-**3.1 watch**
+#### 3.1 watch
+
 作用是监视本地项目文件的变化，发现有修改的代码会自动编译打包生成输出文件。使用方式有以下两种：
 - 配置在 package.json 文件中的 `scripts` 字段中：`webpack --watch`
 - 配置在 webpack 配置文件中：`watch: true`
 
-**3.2 webpack-dev-server（推荐）**
+#### 3.2 webpack-dev-server（推荐）
+
 devServer 会在内存中生成一个打包好的 `bundle.js`，专供开发时使用，打包效率高，修改代码后会自动重新打包以及刷新浏览器，用户体验较好。
+
 注意：devServer 服务运行在项目的 `public` 目录。webpack4.x 默认运行在项目根目录。
 
 1. 安装
@@ -97,7 +101,8 @@ devServer: {
 ....
 ```
 
-**3.3 插件：html-webpack-plugin**
+#### 3.3 插件：html-webpack-plugin
+
 用途
 1. 根据模板生成指定名称的 html 文件（类似于 devServer 生成在内存中的 `bundle.js`）
 2. 会自动引入 `bundle.js`
@@ -123,7 +128,8 @@ plugins: [
 ....
 ```
 
-**3.4 webpack-dev-middleware**
+#### 3.4 webpack-dev-middleware
+
 `webpack-dev-middleware` 是一个容器（wrapper），他可以把 webpack 处理后的文件传递给一个服务器（server），`webpack-dev-server` 在内部使用了它，同时它也可以作为一个单独的包来使用，以进行更多自定义设置来实现更多的需求。
 
 1. 安装 `express` 和 `webpack-dev-middleware`
@@ -151,28 +157,30 @@ app.listen(3000, function() {
 ```
 
 3. 配置 package.json 中 scripts：`"serve": "node server.js"`
+
 4. 运行：`npm run serve`
 
 注意：`webpack-dev-middleware` 必须使用 `html-webpack-plugin` 插件，否则 html 文件无法正确输出到 express 服务的根目录。
 
-3.5 小结
+#### 3.5 小结
+
 自动编译工具主要都是为了提高开发体验。
 
-#### 4 处理 CSS
+### 4 处理 CSS
 处理 CSS 需要 `css-loader` 和 `style-loader` 两个 loader 来完成。
 
-**作用**
+作用
 - css-loader：解析 CSS 文件
 - style-loader：将解析出来的结果加入到 HTML 中，使其生效
 
-**安装**
+安装
 ```bash
 npm install css-loader style-loader -D
 ```
 
-**配置**
-`loader` 需要配置在 `module.rules` 中。
+配置
 
+`loader` 需要配置在 `module.rules` 中。
 ```JavaScript
 ....
 module: {
@@ -188,14 +196,15 @@ module: {
 ....
 ```
 
-#### 5 处理 less 和 sass
-**安装**
+### 5 处理 less 和 sass
+
+安装
 ```bash
 npm i less less-loader -D // 处理 less
 npm i sass-loader node-sass -D // 处理 sass
 ```
 
-**配置**
+配置
 ```JavaScript
 ....
 module: {
@@ -214,3 +223,88 @@ module: {
 }
 ....
 ```
+
+### 6 处理图片和字体
+
+#### webpack5 之前的解析方式
+在 webpack5 之前解析图片和字体都要使用到 `file-loader` 以及 `url-loader`。具体配置如下
+```JavaScript
+....
+module: {
+  rules: [
+    ....
+    // 解析图片
+    {
+      test: /\.(jpg|jpeg|png|bmp|gif)/,
+      use: [
+        {
+          loader: 'url-loader', // 使用 url-loader 必须先安装 file-loader
+          options: {
+            limit: 5 * 1024, // 如果图片大于 5KB 就以路径形式展示，否则就用 base64 格式展示
+            outputPath: 'images', // file-loader 功能，指定输出路径
+            filename: '[name]-[hash:4].[ext]' // file-loader 功能，指定输出文件名
+          },
+          
+        }
+      ],
+    },
+    // 解析字体
+    {
+      test: /\.(woff|woff2|eot|svg|ttf)/,
+      use: 'file-loader'
+    }
+    ....
+  ]
+}
+
+....
+```
+
+#### webpack5 中的解析方式
+
+webpack5 通过资源模块来实现。资源模块(asset module)是一种模块类型，它允许使用资源文件（字体，图标等）而无需配置额外 loader。
+
+资源模块类型(asset module type) 通过添加 4 种新的模块类型，来替换所有这些 loader：
+- `asset/resource` 发送一个单独的文件并导出 URL。之前通过使用 file-loader 实现。
+- `asset/inline` 导出一个资源的 data URI。之前通过使用 url-loader 实现。
+- `asset/source` 导出资源的源代码。之前通过使用 raw-loader 实现。
+- `asset` 在导出一个 data URI 和发送一个单独的文件之间自动选择。之前通过使用 url-loader，并且配置资源体积限制实现。
+
+资源模块具体配置
+```JavaScript
+....
+  module: {
+    rules: [
+      // 解析图片资源
+      {
+        test: /\.(jpg|jpeg|png|bmp|gif)/,
+        type: 'asset/resource',
+        generator: {
+          // 也可以通过配置 output.assetModuleFilename 来统一指定资源输出名称及路径
+          filename: 'images/[name]-[hash:4][ext][query]', // 自定义资源输出名称及路径
+        }
+      },
+      // 解析字体文件资源
+      {
+        test: /\.(woff|woff2|eot|svg|ttf)/,
+        type: 'asset/resource',
+        generator: {
+          filename: 'fonts/[name]-[hash:4][ext][query]', // 自定义资源输出名称及路径
+        }
+      },
+      // 配置资源体积限制
+      {
+        test: /\.(jpg|jpeg|png|bmp|gif)/,
+        type: 'asset',
+        parser: {
+          dataUrlCondition: {
+            maxSize: 5 * 1024, // 同 file-loader 的 limit 配置
+          },
+        },
+      },
+    ]
+  }
+....
+```
+
+
