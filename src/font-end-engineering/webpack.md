@@ -346,4 +346,18 @@ module: {
 - plugin 顺序从前往后依次执行。
 - preset 顺序是颠倒的（从后往前）依次执行。
 
+### 8 source map 的使用
+主要是开发环境中使用，方便进行 debug。通过 `devtool` 配置，用于控制是否生成以及如何生成 source map。
+
+#### 如何选择配置
+
+- 开发环境推荐：`eval-cheap-module-source-map`
+- 生产环境推荐：none，不使用 source map
+
+原因如下：
+
+1. 使用 cheap 模式可以大幅度提高 source map 的生成效率。信息定位到行级别就足够了。
+2. 使用 module 可支持 babel 这种预编译工具，映射转换前的代码。
+3. 使用 eval 方式可大幅提高持续构建效率。
+4. 使用 eval-source-map 模式可以减少网络请求。但是该模式下打包后的文件体积会较大。
 
