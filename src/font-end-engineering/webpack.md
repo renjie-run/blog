@@ -361,3 +361,83 @@ module: {
 3. 使用 eval 方式可大幅提高持续构建效率。
 4. 使用 eval-source-map 模式可以减少网络请求。但是该模式下打包后的文件体积会较大。
 
+### 9 Plugin
+
+#### clean-webpack-plugin
+用于自动清除打包文件目录。
+
+1. 安装
+```bash
+npm install clean-webpack-plugin -D
+```
+
+2. 配置
+```JavaScript
+....
+const { CleanWebpackPlugin } = require('clean-webpack-plugin');
+
+module.exports = {
+....
+  plugins: [
+    ....
+    new CleanWebpackPlugin(),
+    ....
+  ]
+....
+}
+....
+```
+
+#### copy-webpack-plugin
+实现拷贝一些例如静态资源到打包目录中，而这些资源无需参与 webpack 打包。
+
+1. 安装
+```bash
+npm install copy-webpack-plugin -D
+```
+
+2. 配置
+```JavaScript
+....
+const CopyPlugin = require('clean-webpack-plugin');
+
+module.exports = {
+....
+  plugins: [
+    ....
+    new CopyPlugin({
+      patterns: [
+        {
+          from: path.join(__dirname, 'assets'), // 指定从哪里进行拷贝，这里推荐使用绝对路径
+          to: 'assets', // 指定拷贝到哪个目录中，这里推荐使用相对路径（相对于打包输出的目录）
+        }
+      ],
+    }),
+    ....
+  ]
+....
+}
+....
+```
+
+#### BannerPlugin（webpack 内置插件）
+用于给打包的 JS 文件加上版权注释信息。
+
+**配置使用**
+```JavaScript
+....
+const webpack = require('webpack');
+
+module.exports = {
+....
+  plugins: [
+    ....
+    new webpack.BannerPlugin({
+      banner: `版权注释信息`,
+    }),
+    ....
+  ]
+....
+}
+....
+```
