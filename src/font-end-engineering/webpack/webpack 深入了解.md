@@ -125,3 +125,25 @@ module.exports = webpackMerge(baseConfig, {
 ....
 ```
 
+**配置文件归类**
+
+现在的配置文件都放在根目录下，一般会将这些配置文件归类到根目录下的 `config` 或 `build` 目录中。具体操作如下：
+1. 归类到新的目录下，配置文件中使用到了绝对路径的地方需要做相应的调整。
+2. 将 package.json 中所指定的配置文件的路径修改为调整后的配置文件路径。
+
+
+### 5. 定义环境变量
+通过内置插件 `webpack.DefinePlugin` 插件可以定义环境变量，可以用来区分开发环境和生产环境。
+
+具体配置
+```JavaScript
+....
+plugins: [
+  ....
+  new webpack.DefinePlugin({
+    IS_DEV: JSON.stringify(true), // 代码中可以直接使用定义的环境变量：IS_DEV
+  }),
+  ....
+]
+....
+```
