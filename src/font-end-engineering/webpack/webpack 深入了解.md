@@ -110,4 +110,18 @@ plugins: [
 - webpack.prod.js // 生产环境相关配置
 
 可按照以下步骤完成不同环境下的配置：
+1. 将开发环境、生产环境中共用的配置都放到 `webpack.base.js` 配置文件中，专属配置写到各自的配置文件中（例如，mode）。
+2. 然后通过 `webpack-merge` 工具将 `webpack.base.js` 中的配置合并到各自的专属配置文件中。
+3. 修改 `package.json` 中的脚本参数，通过 `--config` 指定打包命令所要使用的配置文件。
+
+**如何使用 webpack-merge**
+```JavaScript
+....
+const baseConfig = require('./webpack.base.js')
+const webpackMerge = require('webpack-merge')
+module.exports = webpackMerge(baseConfig, {
+  // 这里写专属配置
+})
+....
+```
 
