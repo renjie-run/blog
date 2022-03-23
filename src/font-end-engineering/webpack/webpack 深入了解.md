@@ -9,8 +9,10 @@
   module: {
     ....
     rules: [
-      test: /\.(htm|html)$/,
-      use: 'html-withimg-loader',
+      {
+        test: /\.(htm|html)$/,
+        use: 'html-withimg-loader',
+      }
     ]
     ....
   }

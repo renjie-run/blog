@@ -8,7 +8,7 @@
 
 ## CSS 优化
 
-### 将 CSS 提取到单独的文件
+### 1.将 CSS 提取到单独的文件
 使用 `mini-css-extract-plugin` 将 CSS 提取为独立的文件，该插件对每个包含 CSS 的 JS 文件都会创建一个 CSS 文件，支持按需加载 CSS 和 sourceMap。
 
 **优点**
@@ -40,3 +40,73 @@ plugins: [
 ```
 
 3. 需要将 loader 中使用的 `style-loader` 替换为 `MiniCssExtractPlugin.loader`，因为 CSS 都提取到了单独的文件中，不需要再将 CSS 写入到行内。所以不再需要 `style-loader`，而是需要 `MiniCssExtractPlugin` 中的内置 loader 来处理样式。
+
+### 2. 自动添加 CSS 前缀
+为了提高样式的兼容性，一般需要为 CSS 添加前缀，借助 `postcss-loader` 便可以帮助我们轻松实现。
+
+1. 安装
+```bash
+npm install postcss-loader postcss-preset-env -D
+```
+
+2. 配置 loader
+
+在 `css-loader` 之前配置 `postcss-loader`。
+```JavaScript
+....
+module: {
+  ....
+  rules: [
+    {
+      test: /\.css$/,
+      use: [IS_DEV ? 'style-loader' : MiniCssExtractPlugin.loader, 'css-loader', 'postcss-loader'],
+    },
+    {
+      test: /\.less$/,
+      use: [IS_DEV ? 'style-loader' : MiniCssExtractPlugin.loader, 'css-loader', 'postcss-loader', 'less-loader']
+    },
+    {
+      test: /\.s(a|c)ss$/,
+      use: [IS_DEV ? 'style-loader' : MiniCssExtractPlugin.loader, 'css-loader', 'postcss-loader', 'sass-loader']
+    },
+  ]
+  ....
+}
+....
+```
+
+3. 其他配置
+
+在项目根目录下创建 `postcss.config.js` 配置文件。
+```JavaScript
+module.exports = {
+  plugins: [
+    'postcss-preset-env', // webpack@4 中一般会使用 autoprefixer 来处理
+  ]
+}
+```
+
+### 3.开启 CSS 压缩
+CSS 抽取到单独的文件中后，代码是未被压缩的，此时需要使用 `css-minimizer-webpack-plugin` 来处理。
+
+1. 安装
+```bash
+npm install css-minimizer-webpack-plugin -D
+```
+
+2. 配置
+
+注意，该配置是配置在生产环境下的。
+```JavaScript
+....
+const CssMinimizerPlugin = require('css-minimizer-webpack-plugin')
+
+....
+optimization: {
+  minimizer: [
+    `...`,  // webpack@5 中防止默认的 JS 代码压缩功能被覆盖掉的写法，webpack@4 中需要手动再配置一下相关的 JS 压缩插件，才能进行 JS 代码压缩。
+    new CssMinimizerPlugin(),
+  ]
+}
+....
+```
