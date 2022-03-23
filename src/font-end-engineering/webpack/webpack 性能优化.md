@@ -104,7 +104,7 @@ const CssMinimizerPlugin = require('css-minimizer-webpack-plugin')
 ....
 optimization: {
   minimizer: [
-    `...`,  // webpack@5 中防止默认的 JS 代码压缩功能被覆盖掉的写法，webpack@4 中需要手动再配置一下相关的 JS 压缩插件，才能进行 JS 代码压缩。
+    `...`,  // webpack@5 中防止默认的 JS 代码压缩功能被覆盖掉的写法。而在 webpack@4 中则需要手动再重新配置一下 terser-webpack-plugin 等相关的 JS 压缩插件，才能进行 JS 代码压缩。
     new CssMinimizerPlugin(),
   ]
 }
