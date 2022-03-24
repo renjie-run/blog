@@ -120,8 +120,8 @@ plugins: [
 ```JavaScript
 ....
 const baseConfig = require('./webpack.base.js')
-const webpackMerge = require('webpack-merge')
-module.exports = webpackMerge(baseConfig, {
+const { merge } = require('webpack-merge')
+module.exports = merge(baseConfig, {
   // 这里写专属配置
 })
 ....
@@ -131,7 +131,7 @@ module.exports = webpackMerge(baseConfig, {
 
 现在的配置文件都放在根目录下，一般会将这些配置文件归类到根目录下的 `config` 或 `build` 目录中。具体操作如下：
 1. 归类到新的目录下，配置文件中使用到了绝对路径的地方需要做相应的调整。
-2. 将 package.json 中所指定的配置文件的路径修改为调整后的配置文件路径。
+2. 将 `package.json` 中所指定的配置文件的路径修改为调整后的配置文件路径。
 
 
 ### 5. 定义环境变量
