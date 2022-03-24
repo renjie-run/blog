@@ -1,21 +1,21 @@
 # Webpack 基础
 
-## 安装
+## webpack 的使用
+
+### 安装
 在所在项目中安装
 ```bash
 npm i webpack webpack-cli -D // 当前所使用的版本为 5.x
 ```
 
-## webpack 的使用
-
-### 1 webpack-cli 的使用
+### 1.webpack-cli 的使用
 npm 5.2.x 之后提供了 `npx`，帮助执行项目中提供的指令包。
 
 webpack4.0 之后可实现 0 配置打包，即默认打包 `src` 目录下的 `index` 文件.
 但是 0 配置一般限制比较多，无法自定义很多配置。
 常用的还是使用 webpack 配置文件进行打包构建。
 
-### 2 webpack 配置
+### 2.webpack 配置
 **核心概念**
 1. 入口（entry）：程序的入口 js
 2. 输出（output）：打包后存放的位置
@@ -54,7 +54,7 @@ module.exports = {
 
 这里使用了一个 webpack 的 flag：`--config`，用于提供 webpack 配置文件的路径。
 
-### 3 开发时自动编译工具
+### 3.开发时自动编译工具
 1. watch 模式
 2. webpack-dev-server （多数场景下都使用该方式）
 3. webpack-dev-middleware
@@ -80,7 +80,7 @@ npm i webpack-dev-server -D // 注意，webpack-dev-server 依赖于 webpack
 
 3. 将 `index.html` 文件移至 `public` 目录中，同时将文件中的 js 文件路径修改为 `src="bundle.js"`
 
-3. 运行：`npm run dev`
+3. 配置
 
 通过配置文件的方式配置 devServer 的其他参数辅助开发
 ```JavaScript
@@ -100,6 +100,8 @@ devServer: {
 }
 ....
 ```
+
+配置后运行：`npm run dev` 查看效果
 
 #### 3.3 插件：html-webpack-plugin
 
@@ -169,16 +171,16 @@ app.listen(3000, function() {
 ### 4 处理 CSS
 处理 CSS 需要 `css-loader` 和 `style-loader` 两个 loader 来完成。
 
-作用
+**作用**
 - css-loader：解析 CSS 文件
 - style-loader：将解析出来的结果加入到 HTML 中，使其生效
 
-安装
+1. 安装
 ```bash
 npm install css-loader style-loader -D
 ```
 
-配置
+2. 配置
 
 `loader` 需要配置在 `module.rules` 中。
 ```JavaScript
@@ -226,8 +228,8 @@ module: {
 
 ### 6 处理图片和字体
 
-#### webpack5 之前的解析方式
-在 webpack5 之前解析图片和字体都要使用到 `file-loader` 以及 `url-loader`。具体配置如下
+#### webpack@5 之前的解析方式
+在 webpack@5 之前解析图片和字体都要使用到 `file-loader` 以及 `url-loader`。具体配置如下
 ```JavaScript
 ....
 module: {
@@ -244,7 +246,6 @@ module: {
             outputPath: 'images', // file-loader 功能，指定输出路径
             filename: '[name]-[hash:4].[ext]' // file-loader 功能，指定输出文件名
           },
-          
         }
       ],
     },
@@ -324,7 +325,7 @@ module: {
     {
       test: /\.js$/,
       use: 'babel-loader',
-      exclude: /node_module/, // 排除不需要编译的目录
+      exclude: /node_modules/, // 排除不需要编译的目录
     }
     ....
   ]
