@@ -43,9 +43,50 @@ const obj: {
   name: 'Jerry',
   age: 18,
 }
+```
 
-// 数组对象类型
+### 数组类型
+```ts
 const obj2: String[] = ['a', 'b'];
 ```
 
+### 类类型
+```ts
+class Animal {};
 
+const cat: Animal = new Animal(); // 要求 cat 必须是 Animal 类对应的对象
+```
+
+### 函数类型
+```ts
+const func: () => string = () => {
+  return 'hello'
+}
+```
+
+## 元组（Tuple）
+严格限定数字中每个元素的数据类型。
+
+```ts
+const tup: [number, string] = [1, 'a']
+const tup2: [number, string][] = [
+  [1, 'a'],
+  [2, 'b']
+]
+```
+
+## 枚举类型：enum
+程序中使用枚举可提高程序的可读性。
+
+```ts
+enum Agenda {
+  female = 1,
+  male = 0,
+}
+
+// 未指定对应值时，默认从 0 开始
+enum Status {
+  OFF,
+  ON
+}
+```
