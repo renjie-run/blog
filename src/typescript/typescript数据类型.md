@@ -90,3 +90,34 @@ enum Status {
   ON
 }
 ```
+
+## 数组类型
+```ts
+// 类型推断
+let arr = [1, 2, 3] // arr: number[]
+
+// 数字类型数组
+let arr1: number[] = [1, 2, 3]
+
+// 字符串类型数组
+let arr2: string[] = ['a', 'b']
+
+// 混合数组
+let arr3: (number | string)[] = ['a', '2']
+
+// 数组中的对象类型
+let arr4: { name: string, age: number }[] = [
+  { name: 'Jerry', age: 18 },
+  { name: 'Tom', age: 16 }
+]
+
+// 也可以使用类型别名（type）或定义一个类来实现
+type User = {
+  name: string,
+  age: number,
+}
+let arr4: User[] = [
+  { name: 'Jerry', age: 18 },
+]
+```
+
