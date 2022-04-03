@@ -161,7 +161,7 @@ function err(): never {
 }
 ```
 
-### 类
+## 类
 类中的属性必须先声明
 ```ts
 class Animal {
@@ -172,7 +172,7 @@ class Animal {
 }
 ```
 
-**类成员访问修饰符**
+### 类成员访问修饰符
 
 可以在类成员前通过添加关键字来设置该成员的访问权限。
 - public，默认公有成员。所有人都可以访问
@@ -214,7 +214,7 @@ const teddy = new Animal('泰迪')
 teddy.pri // 报错，无法访问受保护的成员
 ```
 
-**只读属性**
+### 只读属性
 
 例如
 ```ts
@@ -230,7 +230,7 @@ dog._name = '田园犬' // 会报错
 ```
 此时，类中的 name 是只读的，初始化后如果再对其进行修改操作就会报错。
 
-**存取器**
+### 存取器
 ```ts
 class Cat {
   private _name: string
@@ -249,4 +249,71 @@ class Cat {
 const orange_cat = new Cat()
 orange_cat.name = '小橘'
 console.log(orange_cat.name)
+```
+
+## 接口：interface
+规范类型
+```ts
+interface AjaxOptions {
+  url: string,
+  type: string,
+  data: object,
+  success(data: object): void,
+  error?(err: string): void,
+}
+
+function ajax(options: AjaxOptions) {}
+
+ajax({
+  url: 'https://www.baidu.com',
+  type: 'get',
+  data: {},
+  success(data) {}
+})
+```
+
+### 可选属性和只读属性
+```ts
+interface AjaxOptions {
+  error?(err: string): void, // 可选属性
+  readonly read: boolean, // 只读属性
+}
+```
+
+### 额外的属性检查
+```ts
+interface Point {
+  x: number,
+  [propName: string]: any
+}
+
+let p: Point = {
+  x: 10,
+  y: 20,
+}
+```
+
+### 接口和函数的结合使用
+```ts
+interface SumInterface {
+  (a:number, b: number): number
+}
+
+let add: SumInterface = (a: number, b: number): number => a + b
+```
+
+### 接口和类的结合使用
+```ts
+interface CatProps {}
+
+class Cat implements CatProps {}
+```
+
+### 接口的继承
+```ts
+interface Animal1 {}
+
+interface Animal2 {}
+
+interface Cat extends Animal1, Animal2 {}
 ```
