@@ -153,9 +153,100 @@ const func = (): viod => {
 ```
 
 **never 类型**
+
 一般用在不可能返回内容的函数的返回值类型。例如抛出异常。
 ```ts
 function err(): never {
   throw Error('error')
 }
+```
+
+### 类
+类中的属性必须先声明
+```ts
+class Animal {
+  name: string // 属性必须先声明
+  constructor(name: string) {
+    this.name = name
+  }
+}
+```
+
+**类成员访问修饰符**
+
+可以在类成员前通过添加关键字来设置该成员的访问权限。
+- public，默认公有成员。所有人都可以访问
+- private，私有成员。只能在当前类中访问
+- protected，受保护成员。只能在当前类或子类中进行访问
+```ts
+
+private 使用情况：
+class Animal {
+  private pri: boolean
+  constructor(public name: string) { // 如果构造函数中在参数前加了修饰符，就相当于声名了这个属性
+    this.name = name
+    this.pri = true
+  }
+}
+
+const dog = new Animal('田园犬')
+dog.pri // 报错，无法访问私有成员
+```
+
+protected 使用情况
+```ts
+class Animal {
+  private pri: boolean
+  constructor(public name: string) {
+    this.name = name
+    this.pri = true
+  }
+}
+
+class Dog extends Animal {
+  constructor(name) {
+    super(name)
+    this.pri = false // 可以正常访问
+  }
+}
+
+const teddy = new Animal('泰迪')
+teddy.pri // 报错，无法访问受保护的成员
+```
+
+**只读属性**
+
+例如
+```ts
+class Animal {
+  public readonly _name: string
+  constructor(name: string) {
+    this._name = name
+  }
+}
+
+const dog = new Animal('哈士奇')
+dog._name = '田园犬' // 会报错
+```
+此时，类中的 name 是只读的，初始化后如果再对其进行修改操作就会报错。
+
+**存取器**
+```ts
+class Cat {
+  private _name: string
+
+  set name(value) {
+    // 可以做一些校验等处理
+    this._name = value
+  }
+
+  get name(): string {
+    // 可以加工后再返回
+    return this._name
+  }
+}
+
+const orange_cat = new Cat()
+orange_cat.name = '小橘'
+console.log(orange_cat.name)
 ```
