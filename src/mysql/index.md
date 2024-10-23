@@ -1,0 +1,10 @@
+## [MySQL] 基础知识储备
+- [常用数据类型](https://github.com/renjie-run/blog/issues/38#issue-2590490889)
+- [常用查询语法和函数](https://github.com/renjie-run/blog/issues/38#issuecomment-2415895720)
+- [关联查询：一对一](https://github.com/renjie-run/blog/issues/38#issuecomment-2416154570)
+- [关联查询：一对多](https://github.com/renjie-run/blog/issues/38#issuecomment-2416308377)
+- [关联查询：多对多](https://github.com/renjie-run/blog/issues/38#issuecomment-2418608131)
+- [复杂的查询](https://github.com/renjie-run/blog/issues/38#issuecomment-2421531819)
+- [综合练习](https://github.com/renjie-run/blog/issues/38#issuecomment-2421676518)
+- [并发问题](https://github.com/renjie-run/blog/issues/38#issuecomment-2421680268)
+- [视图、存储过程和函数](https://github.com/renjie-run/blog/issues/38#issuecomment-2421681561)
