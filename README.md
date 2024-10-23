@@ -12,5 +12,6 @@
 ## 热门分类
 - [Flutter](https://github.com/renjie-run/demo_flutter/wiki)
 - [算法](https://github.com/renjie-run/blog/blob/master/src/algorithm/index.md)
+- [MySQL](https://github.com/renjie-run/blog/blob/master/src/mysql/index.md)
 
 [更多分类](https://github.com/renjie-run/blog/blob/master/src/tag.md)
