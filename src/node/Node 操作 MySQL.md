@@ -267,7 +267,7 @@ npm install mysql2 -S
 }
 ```
 
-这里主要是修改了 connectorPackage 指定数据库为 mysql2，其余的配置只需要按照自己 MySQL 的实际配置情况进行修改即可。
+这里主要是修改了 connectorPackage 指定驱动包为 mysql2，其余的配置只需要按照自己 MySQL 的实际配置情况进行修改即可。
 
 
 ### 运行
