@@ -283,6 +283,7 @@ npm install mysql2 -S
 <img width="1075" alt="image" src="https://github.com/user-attachments/assets/d0045bf5-7f01-4d9c-a5c6-fbf720481f31">
 
 通过这里的代码可以看到这里通过一个 User 的 entity 创建了 user 表，并通过 save 方法往 user 表中插入了一条数据，然后再通过 find 方法查出了这条数据。
+注：这里没有 user 表时会自动创建 user 表是因为开启了 synchronize 配置。
 
 #### 如何确定创建表的结构？
 
