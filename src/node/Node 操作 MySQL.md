@@ -321,3 +321,5 @@ Here you can setup and run express / fastify / any other framework.
 ```
 
 通过日志信息可以看到 typeorm 执行 sql 时还使用了事务机制。
+
+更多 typeorm 特性及使用可探索官网：[https://typeorm.io/](https://typeorm.io/)
