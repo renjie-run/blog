@@ -222,3 +222,101 @@ const mysql = require('mysql2/promise');
   console.log(results);
 ```
 
+
+## TypeORM
+
+通过上面的学习知道了如果通过 Node 操作 MySQL，但一般我们不会直接执行 sql，而是使用 ORM（Object Relational Mapping，对象关系映射）框架。也就是把关系型数据库的表映射成面向对象的 class，表的字段映射成对象的属性映射，表与表的关联映射成属性的关联。而 TypeORM 就是一个流行的 ORM 框架。
+
+接下来，我们来试下这个 typeorm
+
+### 安装
+
+这里直接通过 npx 安装 typeorm 的最新版
+
+```bash
+npx typeorm@latest init --name typeorm-mysql --database mysql
+```
+
+这里通过 `--name` 来指定创建的项目名，通过 `--database` 来指定用的数据库引擎。
+
+<img width="1632" alt="WeCom20241028-140102@2x" src="https://github.com/user-attachments/assets/929c1399-62d7-46e9-99ac-300364d939c1">
+
+### 初始化配置
+
+#### 安装 mysql2
+
+这里是为了将 mysql 更换为 mysql2。
+
+```bash
+npm install mysql2 -S
+```
+
+
+#### 修改数据库连接配置
+
+修改 src/data-source.ts 文件。
+
+```bash
+{
+  ......
+  connectorPackage: 'mysql2',
+  extra: {
+    authPlugin: 'sha256_password',
+  },
+  ......
+}
+```
+
+这里主要是修改了 connectorPackage 指定数据库为 mysql2，其余的配置只需要按照自己 MySQL 的实际配置情况进行修改即可。
+
+
+### 运行
+
+通过 `npm start` 命名启动程序。此时，我们会发现数据库中多了个 user 表，并插入了一条数据。
+
+<img width="1347" alt="image" src="https://github.com/user-attachments/assets/18fb61dc-2a01-4075-a7b8-147b5a6c97b8">
+
+<img width="806" alt="image" src="https://github.com/user-attachments/assets/c3898acd-3cb2-4aa1-8d56-f5aafa67eb1b">
+
+我们来看下程序中都做了哪些操作。
+
+<img width="1075" alt="image" src="https://github.com/user-attachments/assets/d0045bf5-7f01-4d9c-a5c6-fbf720481f31">
+
+通过这里的代码可以看到这里通过一个 User 的 entity 创建了 user 表，并通过 save 方法往 user 表中插入了一条数据，然后再通过 find 方法查出了这条数据。
+
+#### 如何确定创建表的结构？
+
+这里主要是得益于 entity 的字段与实际表中的结构一一对应。可以通过装饰器来确定主键列和其他列。
+
+<img width="644" alt="image" src="https://github.com/user-attachments/assets/05fcd362-61c2-4346-be0e-d507ad661dc3">
+
+#### tpyeorm 对应到 mysql 中执行了什么操作？
+
+我们将数据库连接配置中的 logging 改为 true，然后通过日志看一看具体都执行哪些 MySQL 操作。
+
+这里删掉 user 表，重新启动下项目。
+
+<img width="1340" alt="image" src="https://github.com/user-attachments/assets/e04d6e6d-f156-40fe-97db-4ccee66e841b">
+
+这里通过日志可以看到具体执行 sql 语句。
+
+```bash
+query: SELECT VERSION() AS `version` # 先查询数据版本
+query: START TRANSACTION # 开启事务
+query: SELECT DATABASE() AS `db_name` # 查询当前使用的数据库
+query: SELECT `TABLE_SCHEMA`, `TABLE_NAME`, `TABLE_COMMENT` FROM `INFORMATION_SCHEMA`.`TABLES` WHERE `TABLE_SCHEMA` = 'practice' AND `TABLE_NAME` = 'user'
+query: SELECT * FROM `INFORMATION_SCHEMA`.`COLUMNS` WHERE `TABLE_SCHEMA` = 'practice' AND `TABLE_NAME` = 'typeorm_metadata'
+query: CREATE TABLE `user` (`id` int NOT NULL AUTO_INCREMENT, `firstName` varchar(255) NOT NULL, `lastName` varchar(255) NOT NULL, `age` int NOT NULL, PRIMARY KEY (`id`)) ENGINE=InnoDB # 创建 user 表
+query: COMMIT # 提交事务
+Inserting a new user into the database...
+query: START TRANSACTION # 开启事务
+query: INSERT INTO `user`(`id`, `firstName`, `lastName`, `age`) VALUES (DEFAULT, ?, ?, ?) -- PARAMETERS: ["Timber","Saw",25] # 插入一条数据
+query: COMMIT # 提交事务
+Saved a new user with id: 1
+Loading users from the database...
+query: SELECT `User`.`id` AS `User_id`, `User`.`firstName` AS `User_firstName`, `User`.`lastName` AS `User_lastName`, `User`.`age` AS `User_age` FROM `user` `User` # 查询数据
+Loaded users:  [ User { id: 1, firstName: 'Timber', lastName: 'Saw', age: 25 } ]
+Here you can setup and run express / fastify / any other framework.
+```
+
+通过日志信息可以看到 typeorm 执行 sql 时还使用了事务机制。
